@@ -2,14 +2,14 @@
 
 namespace Game.Core {
     public class Movement : MonoBehaviour {
-        new Rigidbody rigidbody;
+        [HideInInspector]
+        public Vector3 velocity = Vector3.zero;
         
         [Header("Settings")]
         [SerializeField]
         float speed = 1;
-
-        [HideInInspector]
-        public Vector3 velocity = Vector3.zero;
+        
+        new Rigidbody rigidbody;
 
         void Awake() {
             rigidbody = GetComponent<Rigidbody>();
