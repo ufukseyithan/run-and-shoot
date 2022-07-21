@@ -1,33 +1,42 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Game.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Enemy : MonoBehaviour {
-    Movement movement;
-    Look look;
+namespace Game.Core {
+    public class Enemy : MonoBehaviour {
+        Movement movement;
+        Look look;
     
-    Transform playerTransform;
+        Transform playerTransform;
 
-    void Awake() {
-        movement = GetComponent<Movement>();
-        look = GetComponent<Look>();
-        playerTransform = GameObject.FindWithTag("Player").transform;
-    }
+        [SerializeField]
+        int health = 3;
 
-    void Update() {
-        var playerPosition = playerTransform.position;
-        var pointToFollow = new Vector3(playerPosition.x, transform.position.y, playerPosition.z);
-        var direction = (pointToFollow - transform.position).normalized;
+        void Awake() {
+            movement = GetComponent<Movement>();
+            look = GetComponent<Look>();
+            playerTransform = GameObject.FindWithTag("Player").transform;
+        }
 
-        movement.velocity = direction;
-        look.point = pointToFollow;
-    }
+        void Update() {
+            var playerPosition = playerTransform.position;
+            var pointToFollow = new Vector3(playerPosition.x, transform.position.y, playerPosition.z);
+            var direction = (pointToFollow - transform.position).normalized;
 
-    void OnCollisionEnter(Collision other) {
-        if (other.transform == playerTransform)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            movement.velocity = direction;
+            look.point = pointToFollow;
+        }
+
+        void OnCollisionEnter(Collision other) {
+            if (other.transform == playerTransform)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void TakeDamage() {
+            health--;
+            
+            if (health <= 0)
+                Destroy(gameObject);
+        }
     }
 }
