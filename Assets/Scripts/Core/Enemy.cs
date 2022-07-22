@@ -45,8 +45,12 @@ namespace Game.Core {
             if (health <= 0) {
                 enemyCount--;
 
-                if (enemyCount <= 0)
+                if (enemyCount <= 0) {
                     LevelManager.LoadNextLevel();
+                    
+                    Debug.Log("yea");
+                }
+                    
                 
                 Destroy(gameObject);
             }

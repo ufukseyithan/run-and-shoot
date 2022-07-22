@@ -8,7 +8,6 @@ namespace Game.Core {
 
         public void HandleMoveInput(InputAction.CallbackContext context) {
             var velocity = context.ReadValue<Vector2>().normalized;
-            Debug.Log(velocity);
             OnMove?.Invoke(new Vector3(velocity.x, 0, velocity.y));
         } 
     }

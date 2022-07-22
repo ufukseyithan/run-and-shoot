@@ -7,8 +7,8 @@ namespace Game.Core {
         public static void LoadNextLevel() {
             var currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
             var nextLevelIndex = currentLevelIndex + 1;
-            var isNextLevelAvailable = nextLevelIndex <= SceneManager.sceneCount;
-            
+            var isNextLevelAvailable = nextLevelIndex < SceneManager.sceneCountInBuildSettings;
+
             SceneManager.LoadScene(isNextLevelAvailable ? nextLevelIndex : 0);
         } 
         
