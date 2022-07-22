@@ -1,9 +1,12 @@
+using System;
 using Game.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Game.Core {
     public class Enemy : MonoBehaviour {
+        public static int enemyCount = 0;
+        
         Movement movement;
         Look look;
     
@@ -18,6 +21,17 @@ namespace Game.Core {
             playerTransform = GameObject.FindWithTag("Player").transform;
         }
 
+        void OnEnable() {
+            enemyCount++;
+        }
+
+        void OnDisable() {
+            enemyCount--;
+
+            if (enemyCount <= 0)
+                LevelManager.LoadNextLevel();
+        }
+
         void Update() {
             var playerPosition = playerTransform.position;
             var pointToFollow = new Vector3(playerPosition.x, transform.position.y, playerPosition.z);
@@ -29,7 +43,7 @@ namespace Game.Core {
 
         void OnCollisionEnter(Collision other) {
             if (other.transform == playerTransform)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                LevelManager.RestartLevel();
         }
 
         public void TakeDamage() {
