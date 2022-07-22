@@ -17,7 +17,7 @@ namespace Game.Core {
         }
 
         void Update() {
-            var closestEnemy = FindClosestEnemy();
+            var closestEnemy = FindClosestEnemy(10);
 
             if (closestEnemy != null) {
                 var enemyPosition = closestEnemy.transform.position;
@@ -27,24 +27,26 @@ namespace Game.Core {
             }
         }
 
-        GameObject FindClosestEnemy() {
+        GameObject FindClosestEnemy(float range = 0) {
             var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
 
-            GameObject closest = null;
-            var distance = Mathf.Infinity;
+            GameObject closestEnemy = null;
+            var closestDistance = Mathf.Infinity;
             var position = transform.position;
             
             foreach (var enemyObject in enemyObjects) {
-                var diff = enemyObject.transform.position - position;
-                var curDistance = diff.sqrMagnitude;
-                
-                if (curDistance < distance) {
-                    closest = enemyObject;
-                    distance = curDistance;
+                var distance = Vector3.Distance(position, enemyObject.transform.position);
+
+                if (distance > range)
+                    continue;
+
+                if (distance < closestDistance) {
+                    closestEnemy = enemyObject;
+                    closestDistance = distance;
                 }
             }
             
-            return closest;
+            return closestEnemy;
         }
     }
 }
