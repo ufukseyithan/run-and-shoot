@@ -1,11 +1,9 @@
-using System;
-using Game.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Game.Core {
     public class Enemy : MonoBehaviour {
-        public static int enemyCount = 0;
+        public static int enemyCount;
         
         Movement movement;
         Look look;
@@ -19,17 +17,12 @@ namespace Game.Core {
             movement = GetComponent<Movement>();
             look = GetComponent<Look>();
             playerTransform = GameObject.FindWithTag("Player").transform;
+
+            enemyCount = 0;
         }
 
-        void OnEnable() {
+        void Start() {
             enemyCount++;
-        }
-
-        void OnDisable() {
-            enemyCount--;
-
-            if (enemyCount <= 0)
-                LevelManager.LoadNextLevel();
         }
 
         void Update() {
@@ -48,9 +41,15 @@ namespace Game.Core {
 
         public void TakeDamage() {
             health--;
-            
-            if (health <= 0)
+
+            if (health <= 0) {
+                enemyCount--;
+
+                if (enemyCount <= 0)
+                    LevelManager.LoadNextLevel();
+                
                 Destroy(gameObject);
+            }
         }
     }
 }
